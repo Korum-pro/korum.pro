@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    width="220" height="240" viewBox="325 35 210 240"
+    role="img" aria-labelledby="title desc"
+    preserveAspectRatio="xMidYMid meet">
+  <title id="title">KöRum symbol</title>
+  <desc id="desc">Open Nordic ring with two amber voices.</desc>
+  <g fill="none" stroke="#7C99B4" stroke-width="20" stroke-linecap="butt">
+    <path d="M 409 92 C 372 104, 350 139, 350 176 C 350 214, 372 246, 409 257"/>
+    <path d="M 448 92 C 485 104, 507 139, 507 176 C 507 214, 485 246, 448 257"/>
+  </g>
+  <circle cx="398" cy="61" r="14" fill="#E3A54F"/>
+  <circle cx="459" cy="61" r="14" fill="#E3A54F"/>
+</svg>
