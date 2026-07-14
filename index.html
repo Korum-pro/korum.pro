@@ -3,29 +3,80 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>KöRum — Virtual Choir Simulation Room</title>
+
+  <title>KöRum — Rehearse Tomorrow’s Venue Today</title>
+  <meta
+    name="description"
+    content="KöRum helps choirs rehearse tomorrow’s venue today through virtual acoustic simulation."
+  />
+
+  <link rel="icon" href="Korum-logo.svg" type="image/svg+xml" />
+
   <style>
+    :root {
+      --hall-blue: #22334A;
+      --nordic: #7C99B4;
+      --self-amber: #E3A54F;
+      --ice: #E9EFF4;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
     body {
-      font-family: Arial, sans-serif;
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 32px;
+      background: var(--ice);
+      color: var(--hall-blue);
+      font-family: Arial, Helvetica, sans-serif;
       text-align: center;
-      padding: 50px;
-      background-color: #f9f9f9;
-      color: #333;
     }
-    p {
-      font-size: 20px;
-      color: #666;
+
+    main {
+      width: min(920px, 100%);
     }
-    img {
-      width: 200px;
-      max-width: 90%;
-      margin-bottom: 20px;
+
+    .logo {
+      display: block;
+      width: min(760px, 92vw);
+      height: auto;
+      margin: 0 auto;
+    }
+
+    .coming-soon {
+      margin: 32px 0 0;
+      font-size: clamp(16px, 2vw, 20px);
+      letter-spacing: 0.08em;
+      color: var(--hall-blue);
+    }
+
+    .domain {
+      margin: 12px 0 0;
+      font-size: 15px;
+      color: var(--nordic);
     }
   </style>
 </head>
+
 <body>
-  <img src="Korum-logo.svg" alt="KöRum Logo" />
-  <p>Virtual Choir Simulation Room</p>
-  <p>Coming soon at korum.pro</p>
+  <main>
+    <img
+      class="logo"
+      src="Korum-logo.svg"
+      alt="KöRum — Rehearse tomorrow’s venue today"
+    />
+
+    <p class="coming-soon">COMING SOON</p>
+    <p class="domain">korum.pro</p>
+  </main>
 </body>
 </html>
