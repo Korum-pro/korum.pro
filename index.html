@@ -5,12 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title>KöRum — Rehearse Tomorrow’s Venue Today</title>
+
   <meta
     name="description"
     content="KöRum helps choirs rehearse tomorrow’s venue today through virtual acoustic simulation."
   />
 
-  <link rel="icon" href="Korum-logo.svg" type="image/svg+xml" />
+  <meta name="theme-color" content="#22334A" />
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
 
   <style>
     :root {
@@ -43,6 +49,7 @@
 
     main {
       width: min(920px, 100%);
+      animation: fade-in 0.9s ease-out both;
     }
 
     .logo {
@@ -52,10 +59,11 @@
       margin: 0 auto;
     }
 
-    .coming-soon {
-      margin: 32px 0 0;
+    .status {
+      margin: 34px 0 0;
       font-size: clamp(16px, 2vw, 20px);
-      letter-spacing: 0.08em;
+      font-weight: 500;
+      letter-spacing: 0.12em;
       color: var(--hall-blue);
     }
 
@@ -63,6 +71,24 @@
       margin: 12px 0 0;
       font-size: 15px;
       color: var(--nordic);
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      main {
+        animation: none;
+      }
     }
   </style>
 </head>
@@ -75,7 +101,7 @@
       alt="KöRum — Rehearse tomorrow’s venue today"
     />
 
-    <p class="coming-soon">COMING SOON</p>
+    <p class="status">LAUNCHING SOON</p>
     <p class="domain">korum.pro</p>
   </main>
 </body>
