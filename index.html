@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>KöRum — Rehearse Tomorrow’s Venue Today</title>
+  <title>KöRum — Singer Prototype</title>
 
   <meta
     name="description"
-    content="KöRum helps choirs rehearse tomorrow’s venue today through virtual acoustic simulation."
+    content="Experience a virtual choir from your own singing position."
   />
 
   <meta name="theme-color" content="#22334A" />
@@ -21,73 +21,257 @@
   <style>
     :root {
       --hall-blue: #22334A;
-      --nordic: #7C99B4;
+      --nordic-blue: #7C99B4;
       --self-amber: #E3A54F;
       --ice: #E9EFF4;
+      --white: #FFFFFF;
+      --muted: #667789;
+      --border: #CBD6DF;
+      --shadow: 0 14px 38px rgba(34, 51, 74, 0.10);
     }
 
     * {
       box-sizing: border-box;
     }
 
-    html,
-    body {
-      margin: 0;
-      min-height: 100%;
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
+      margin: 0;
       min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 32px;
+      padding: 24px 16px 48px;
       background: var(--ice);
       color: var(--hall-blue);
       font-family: Arial, Helvetica, sans-serif;
-      text-align: center;
     }
 
     main {
-      width: min(920px, 100%);
-      animation: fade-in 0.9s ease-out both;
+      width: min(760px, 100%);
+      margin: 0 auto;
     }
 
     .logo {
       display: block;
-      width: min(760px, 92vw);
+      width: min(430px, 88vw);
       height: auto;
-      margin: 0 auto;
+      margin: 4px auto 18px;
     }
 
-    .status {
-      margin: 34px 0 0;
-      font-size: clamp(16px, 2vw, 20px);
-      font-weight: 500;
-      letter-spacing: 0.12em;
+    .intro {
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .intro h1 {
+      margin: 0 0 8px;
+      font-size: clamp(25px, 5vw, 38px);
+      line-height: 1.15;
+    }
+
+    .intro p {
+      max-width: 560px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .card {
+      margin-bottom: 18px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .step-label {
+      display: inline-block;
+      margin-bottom: 8px;
+      color: var(--nordic-blue);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 22px;
+    }
+
+    .instruction {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .notice {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-left: 4px solid var(--self-amber);
+      border-radius: 10px;
+      background: #FFF8EC;
+      color: var(--hall-blue);
+      line-height: 1.5;
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .spacing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    button,
+    .feedback-link {
+      min-height: 48px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--white);
+      color: var(--hall-blue);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition:
+        transform 0.15s ease,
+        border-color 0.15s ease,
+        background 0.15s ease;
+    }
+
+    button:hover,
+    .feedback-link:hover {
+      transform: translateY(-1px);
+      border-color: var(--nordic-blue);
+    }
+
+    button:focus-visible,
+    .feedback-link:focus-visible {
+      outline: 3px solid rgba(227, 165, 79, 0.45);
+      outline-offset: 2px;
+    }
+
+    button.active {
+      border-color: var(--hall-blue);
+      background: var(--hall-blue);
+      color: var(--white);
+    }
+
+    button.primary {
+      border-color: var(--hall-blue);
+      background: var(--hall-blue);
+      color: var(--white);
+    }
+
+    button.secondary {
+      background: var(--ice);
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+      transform: none;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .current-selection {
+      margin-top: 16px;
+      min-height: 24px;
+      color: var(--muted);
+      font-size: 15px;
+      text-align: center;
+    }
+
+    .current-selection strong {
       color: var(--hall-blue);
     }
 
-    .domain {
-      margin: 12px 0 0;
-      font-size: 15px;
-      color: var(--nordic);
+    .hidden {
+      display: none;
     }
 
-    @keyframes fade-in {
-      from {
-        opacity: 0;
-        transform: translateY(15px);
+    .feedback {
+      text-align: center;
+    }
+
+    .feedback-link {
+      display: inline-flex;
+      width: 100%;
+      margin-top: 16px;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 18px;
+      background: var(--self-amber);
+      color: var(--hall-blue);
+      text-decoration: none;
+    }
+
+    .privacy-note {
+      margin-top: 13px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .error-message {
+      display: none;
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 10px;
+      background: #FBEAEA;
+      color: #7A2525;
+      font-size: 14px;
+    }
+
+    footer {
+      padding-top: 8px;
+      color: var(--nordic-blue);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 16px 12px 36px;
       }
 
-      to {
-        opacity: 1;
-        transform: translateY(0);
+      .card {
+        padding: 20px 16px;
+      }
+
+      .spacing-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .controls {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .controls .primary {
+        grid-column: 1 / -1;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      main {
-        animation: none;
+      * {
+        scroll-behavior: auto;
+        transition: none !important;
       }
     }
   </style>
@@ -101,8 +285,470 @@
       alt="KöRum — Rehearse tomorrow’s venue today"
     />
 
-    <p class="status">LAUNCHING SOON</p>
-    <p class="domain">korum.pro</p>
+    <section class="intro">
+      <h1>Hear the choir from your singing position</h1>
+      <p>
+        Select your voice part, sing along and compare three different
+        choir spacings.
+      </p>
+    </section>
+
+    <section class="card">
+      <span class="step-label">Before you begin</span>
+      <h2>Prepare your AirPods Pro</h2>
+
+      <p class="instruction">
+        Use both AirPods Pro in <strong>Transparency Mode</strong>.
+        Turn off Spatial Audio and automatic volume adjustment.
+      </p>
+
+      <div class="notice">
+        Find a quiet place and keep the same device volume throughout
+        the comparison.
+      </div>
+    </section>
+
+    <section class="card">
+      <span class="step-label">Step 1</span>
+      <h2>Select your voice part</h2>
+
+      <p class="instruction">
+        Choose the part you normally sing.
+      </p>
+
+      <div class="button-grid" id="voiceButtons">
+        <button type="button" data-voice="soprano">Soprano</button>
+        <button type="button" data-voice="alto">Alto</button>
+        <button type="button" data-voice="tenor">Tenor</button>
+        <button type="button" data-voice="bass">Bass</button>
+      </div>
+    </section>
+
+    <section class="card" id="setupSection">
+      <span class="step-label">Step 2</span>
+      <h2>Set your listening level</h2>
+
+      <p class="instruction">
+        Play the sample and sing along briefly. Adjust the device volume
+        until you can hear both yourself and the choir comfortably.
+      </p>
+
+      <div class="controls">
+        <button
+          type="button"
+          class="primary"
+          id="setupPlayButton"
+          disabled
+        >
+          Play setup sample
+        </button>
+
+        <button
+          type="button"
+          class="secondary"
+          id="setupRestartButton"
+          disabled
+        >
+          Restart
+        </button>
+
+        <button
+          type="button"
+          class="secondary"
+          id="setupDoneButton"
+          disabled
+        >
+          Volume set
+        </button>
+      </div>
+
+      <p class="current-selection" id="setupStatus">
+        Select your voice part first.
+      </p>
+    </section>
+
+    <section class="card hidden" id="comparisonSection">
+      <span class="step-label">Step 3</span>
+      <h2>Compare the three choir spacings</h2>
+
+      <p class="instruction">
+        Sing at a comfortable and similar level in all three conditions.
+        Do not change the device volume.
+      </p>
+
+      <div class="spacing-grid" id="spacingButtons">
+        <button type="button" data-spacing="close">Close</button>
+        <button type="button" data-spacing="lateral">Lateral</button>
+        <button type="button" data-spacing="circumambient">
+          Circumambient
+        </button>
+      </div>
+
+      <div class="controls">
+        <button
+          type="button"
+          class="primary"
+          id="playPauseButton"
+          disabled
+        >
+          Play
+        </button>
+
+        <button
+          type="button"
+          class="secondary"
+          id="restartButton"
+          disabled
+        >
+          Restart
+        </button>
+      </div>
+
+      <p class="current-selection" id="comparisonStatus">
+        Select a choir spacing.
+      </p>
+
+      <div class="error-message" id="audioError">
+        The audio file could not be loaded. Please check your internet
+        connection and try again.
+      </div>
+    </section>
+
+    <section class="card feedback hidden" id="feedbackSection">
+      <span class="step-label">Finished?</span>
+      <h2>Tell us what you noticed</h2>
+
+      <p class="instruction">
+        Your brief feedback will help us decide what to improve next.
+      </p>
+
+      <a
+        class="feedback-link"
+        id="feedbackLink"
+        href="PASTE_YOUR_GOOGLE_FORM_LINK_HERE"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Give brief feedback
+      </a>
+
+      <p class="privacy-note">
+        This is an early prototype test. Optional feedback will be used
+        only to improve KöRum. Please do not include personal or sensitive
+        information.
+      </p>
+    </section>
+
+    <footer>
+      KöRum · Rehearse tomorrow’s venue today
+    </footer>
+
+    <audio id="audioPlayer" preload="metadata"></audio>
   </main>
+
+  <script>
+    const audioPlayer = document.getElementById("audioPlayer");
+
+    const voiceButtons = document.querySelectorAll(
+      "#voiceButtons button"
+    );
+
+    const spacingButtons = document.querySelectorAll(
+      "#spacingButtons button"
+    );
+
+    const setupPlayButton =
+      document.getElementById("setupPlayButton");
+
+    const setupRestartButton =
+      document.getElementById("setupRestartButton");
+
+    const setupDoneButton =
+      document.getElementById("setupDoneButton");
+
+    const playPauseButton =
+      document.getElementById("playPauseButton");
+
+    const restartButton =
+      document.getElementById("restartButton");
+
+    const setupStatus =
+      document.getElementById("setupStatus");
+
+    const comparisonStatus =
+      document.getElementById("comparisonStatus");
+
+    const comparisonSection =
+      document.getElementById("comparisonSection");
+
+    const feedbackSection =
+      document.getElementById("feedbackSection");
+
+    const audioError =
+      document.getElementById("audioError");
+
+    let selectedVoice = "";
+    let selectedSpacing = "";
+    let currentMode = "";
+    let setupCompleted = false;
+
+    const listenedSpacings = new Set();
+
+    function capitalize(text) {
+      return text.charAt(0).toUpperCase() + text.slice(1);
+    }
+
+    function getAudioPath(voice, spacing) {
+      return `audio/${voice}/${voice}_${spacing}.wav`;
+    }
+
+    function loadAudio(path, mode, preserveTime = false) {
+      const previousTime = preserveTime
+        ? audioPlayer.currentTime
+        : 0;
+
+      const wasPlaying = !audioPlayer.paused;
+
+      audioPlayer.pause();
+      audioPlayer.src = path;
+      audioPlayer.load();
+
+      currentMode = mode;
+      audioError.style.display = "none";
+
+      audioPlayer.addEventListener(
+        "loadedmetadata",
+        () => {
+          if (
+            preserveTime &&
+            Number.isFinite(audioPlayer.duration)
+          ) {
+            audioPlayer.currentTime = Math.min(
+              previousTime,
+              Math.max(0, audioPlayer.duration - 0.1)
+            );
+          }
+
+          if (wasPlaying && mode === "comparison") {
+            audioPlayer.play().catch(showAudioError);
+          }
+        },
+        { once: true }
+      );
+    }
+
+    function showAudioError() {
+      audioError.style.display = "block";
+    }
+
+    function updatePlayButton() {
+      if (audioPlayer.paused) {
+        playPauseButton.textContent = "Play";
+      } else {
+        playPauseButton.textContent = "Pause";
+      }
+    }
+
+    voiceButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        selectedVoice = button.dataset.voice;
+        selectedSpacing = "";
+        setupCompleted = false;
+        listenedSpacings.clear();
+
+        voiceButtons.forEach((item) => {
+          item.classList.toggle(
+            "active",
+            item === button
+          );
+        });
+
+        spacingButtons.forEach((item) => {
+          item.classList.remove("active");
+        });
+
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
+
+        setupPlayButton.disabled = false;
+        setupRestartButton.disabled = false;
+        setupDoneButton.disabled = false;
+
+        comparisonSection.classList.add("hidden");
+        feedbackSection.classList.add("hidden");
+
+        setupStatus.innerHTML =
+          `Selected voice part: <strong>${capitalize(
+            selectedVoice
+          )}</strong>`;
+
+        loadAudio(
+          getAudioPath(selectedVoice, "lateral"),
+          "setup"
+        );
+      });
+    });
+
+    setupPlayButton.addEventListener("click", async () => {
+      if (!selectedVoice) {
+        return;
+      }
+
+      try {
+        if (currentMode !== "setup") {
+          loadAudio(
+            getAudioPath(selectedVoice, "lateral"),
+            "setup"
+          );
+        }
+
+        if (audioPlayer.paused) {
+          await audioPlayer.play();
+          setupPlayButton.textContent = "Pause sample";
+        } else {
+          audioPlayer.pause();
+          setupPlayButton.textContent =
+            "Play setup sample";
+        }
+      } catch {
+        showAudioError();
+      }
+    });
+
+    setupRestartButton.addEventListener("click", async () => {
+      if (!selectedVoice) {
+        return;
+      }
+
+      audioPlayer.currentTime = 0;
+
+      try {
+        await audioPlayer.play();
+        setupPlayButton.textContent = "Pause sample";
+      } catch {
+        showAudioError();
+      }
+    });
+
+    setupDoneButton.addEventListener("click", () => {
+      if (!selectedVoice) {
+        return;
+      }
+
+      audioPlayer.pause();
+      audioPlayer.currentTime = 0;
+
+      setupCompleted = true;
+      setupPlayButton.textContent = "Play setup sample";
+
+      comparisonSection.classList.remove("hidden");
+      comparisonSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    });
+
+    spacingButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        if (!selectedVoice || !setupCompleted) {
+          return;
+        }
+
+        const newSpacing = button.dataset.spacing;
+        const preserveTime =
+          currentMode === "comparison";
+
+        selectedSpacing = newSpacing;
+
+        spacingButtons.forEach((item) => {
+          item.classList.toggle(
+            "active",
+            item === button
+          );
+        });
+
+        loadAudio(
+          getAudioPath(
+            selectedVoice,
+            selectedSpacing
+          ),
+          "comparison",
+          preserveTime
+        );
+
+        playPauseButton.disabled = false;
+        restartButton.disabled = false;
+
+        comparisonStatus.innerHTML =
+          `<strong>${capitalize(
+            selectedVoice
+          )}</strong> · ${capitalize(
+            selectedSpacing
+          )}`;
+
+        listenedSpacings.add(selectedSpacing);
+
+        if (listenedSpacings.size === 3) {
+          feedbackSection.classList.remove("hidden");
+        }
+      });
+    });
+
+    playPauseButton.addEventListener("click", async () => {
+      if (!selectedVoice || !selectedSpacing) {
+        return;
+      }
+
+      try {
+        if (audioPlayer.paused) {
+          await audioPlayer.play();
+        } else {
+          audioPlayer.pause();
+        }
+
+        updatePlayButton();
+      } catch {
+        showAudioError();
+      }
+    });
+
+    restartButton.addEventListener("click", async () => {
+      if (!selectedSpacing) {
+        return;
+      }
+
+      audioPlayer.currentTime = 0;
+
+      try {
+        await audioPlayer.play();
+        updatePlayButton();
+      } catch {
+        showAudioError();
+      }
+    });
+
+    audioPlayer.addEventListener("play", () => {
+      if (currentMode === "comparison") {
+        updatePlayButton();
+      }
+    });
+
+    audioPlayer.addEventListener("pause", () => {
+      if (currentMode === "comparison") {
+        updatePlayButton();
+      }
+    });
+
+    audioPlayer.addEventListener("ended", () => {
+      setupPlayButton.textContent =
+        "Play setup sample";
+      updatePlayButton();
+    });
+
+    audioPlayer.addEventListener(
+      "error",
+      showAudioError
+    );
+  </script>
 </body>
 </html>
