@@ -18,6 +18,13 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <link rel="manifest" href="site.webmanifest" />
 
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
   <style>
     :root {
       --hall-blue: #22334A;
@@ -44,7 +51,11 @@
       padding: 24px 16px 48px;
       background: var(--ice);
       color: var(--hall-blue);
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: "Inter", Arial, Helvetica, sans-serif;
+    }
+
+    body.score-open {
+      overflow: hidden;
     }
 
     main {
@@ -59,6 +70,14 @@
       margin: 4px auto 18px;
     }
 
+    .choir-layout {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin: 18px 0 8px;
+      border-radius: 12px;
+    }
+
     .intro {
       margin-bottom: 24px;
       text-align: center;
@@ -71,7 +90,7 @@
     }
 
     .intro p {
-      max-width: 560px;
+      max-width: 580px;
       margin: 0 auto;
       color: var(--muted);
       font-size: 17px;
@@ -117,6 +136,15 @@
       background: #FFF8EC;
       color: var(--hall-blue);
       line-height: 1.5;
+    }
+
+    .setup-list {
+      margin: 0;
+      padding-left: 22px;
+    }
+
+    .setup-list li + li {
+      margin-top: 8px;
     }
 
     .button-grid {
@@ -190,6 +218,21 @@
       margin-top: 18px;
     }
 
+    .controls-two {
+      grid-template-columns: 1.4fr 1fr;
+    }
+
+    .score-actions {
+      display: flex;
+      justify-content: center;
+      margin-top: 12px;
+    }
+
+    .score-button {
+      width: 100%;
+      background: var(--ice);
+    }
+
     .current-selection {
       margin-top: 16px;
       min-height: 24px;
@@ -239,6 +282,74 @@
       font-size: 14px;
     }
 
+    .score-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      background: rgba(20, 31, 46, 0.78);
+    }
+
+    .score-overlay.open {
+      display: flex;
+    }
+
+    .score-panel {
+      width: min(760px, 100%);
+      max-height: calc(100dvh - 28px);
+      overflow: auto;
+      padding: 16px;
+      border-radius: 18px;
+      background: var(--white);
+      box-shadow: 0 24px 60px rgba(20, 31, 46, 0.30);
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .score-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .score-header h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .score-close {
+      min-height: 42px;
+      padding: 8px 14px;
+      background: var(--ice);
+    }
+
+    .score-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--white);
+    }
+
+    .score-caption {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .score-nav {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
     footer {
       padding-top: 8px;
       color: var(--nordic-blue);
@@ -259,12 +370,25 @@
         grid-template-columns: 1fr;
       }
 
-      .controls {
+      .controls,
+      .controls-two {
         grid-template-columns: 1fr 1fr;
       }
 
-      .controls .primary {
+      .controls .primary,
+      .controls-two .primary {
         grid-column: 1 / -1;
+      }
+
+      .score-overlay {
+        align-items: flex-start;
+        padding: 8px;
+      }
+
+      .score-panel {
+        max-height: calc(100dvh - 16px);
+        padding: 12px;
+        border-radius: 14px;
       }
     }
 
@@ -288,6 +412,7 @@
     <section class="intro">
       <h1>Hear the choir from your singing position</h1>
       <p>
+        Open this prototype in <strong>Safari on your iPhone</strong>.
         Select your voice part, sing along and compare three different
         choir spacings.
       </p>
@@ -298,14 +423,27 @@
       <h2>Prepare your AirPods Pro</h2>
 
       <p class="instruction">
-        Use both AirPods Pro in <strong>Transparency Mode</strong>.
-        Turn off Spatial Audio and automatic volume adjustment.
+        On your iPhone, open <strong>Control Center</strong>, then press
+        and hold the volume slider.
       </p>
 
       <div class="notice">
-        Find a quiet place and keep the same device volume throughout
-        the comparison.
+        <ol class="setup-list">
+          <li>
+            Set <strong>Noise Control</strong> to
+            <strong>Transparency</strong>.
+          </li>
+          <li>
+            Turn off <strong>Conversation Awareness</strong> and
+            <strong>Spatialize Stereo</strong>.
+          </li>
+        </ol>
       </div>
+
+      <p class="instruction" style="margin-top: 14px;">
+        Use both AirPods Pro, find a quiet place and keep the same device
+        volume throughout the comparison.
+      </p>
     </section>
 
     <section class="card">
@@ -315,6 +453,12 @@
       <p class="instruction">
         Choose the part you normally sing.
       </p>
+
+      <img
+        class="choir-layout"
+        src="choir-layout.png"
+        alt="Choir layout showing soprano, alto, tenor and bass positions"
+      />
 
       <div class="button-grid" id="voiceButtons">
         <button type="button" data-voice="soprano">Soprano</button>
@@ -330,7 +474,8 @@
 
       <p class="instruction">
         Play the sample and sing along briefly. Adjust the device volume
-        until you can hear both yourself and the choir comfortably.
+        until you can hear both yourself and the choir comfortably. Open
+        the score while singing; it will follow the audio automatically.
       </p>
 
       <div class="controls">
@@ -362,6 +507,16 @@
         </button>
       </div>
 
+      <div class="score-actions">
+        <button
+          type="button"
+          class="score-button"
+          id="viewScoreSetup"
+        >
+          View score
+        </button>
+      </div>
+
       <p class="current-selection" id="setupStatus">
         Select your voice part first.
       </p>
@@ -373,7 +528,8 @@
 
       <p class="instruction">
         Sing at a comfortable and similar level in all three conditions.
-        Do not change the device volume.
+        Do not change the device volume. The score follows the current
+        playback position when you switch between spacings.
       </p>
 
       <div class="spacing-grid" id="spacingButtons">
@@ -384,7 +540,7 @@
         </button>
       </div>
 
-      <div class="controls">
+      <div class="controls controls-two">
         <button
           type="button"
           class="primary"
@@ -404,6 +560,16 @@
         </button>
       </div>
 
+      <div class="score-actions">
+        <button
+          type="button"
+          class="score-button"
+          id="viewScoreComparison"
+        >
+          View score
+        </button>
+      </div>
+
       <p class="current-selection" id="comparisonStatus">
         Select a choir spacing.
       </p>
@@ -419,13 +585,14 @@
       <h2>Tell us what you noticed</h2>
 
       <p class="instruction">
-        Your brief feedback will help us decide what to improve next.
+        Your brief feedback will help us understand the experience and
+        decide what to improve next.
       </p>
 
       <a
         class="feedback-link"
         id="feedbackLink"
-        href="PASTE_YOUR_GOOGLE_FORM_LINK_HERE"
+        href="https://forms.gle/4GZVpnNnHYUSjbmD8"
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -433,9 +600,8 @@
       </a>
 
       <p class="privacy-note">
-        This is an early prototype test. Optional feedback will be used
-        only to improve KöRum. Please do not include personal or sensitive
-        information.
+        Thank you for trying this early version of KöRum. Please avoid
+        including personal or sensitive information in your responses.
       </p>
     </section>
 
@@ -445,6 +611,57 @@
 
     <audio id="audioPlayer" preload="metadata"></audio>
   </main>
+
+  <div
+    class="score-overlay"
+    id="scoreOverlay"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="scoreTitle"
+    aria-hidden="true"
+  >
+    <div class="score-panel">
+      <div class="score-header">
+        <h2 id="scoreTitle">Score</h2>
+        <button
+          type="button"
+          class="score-close"
+          id="closeScoreButton"
+        >
+          Close
+        </button>
+      </div>
+
+      <img
+        class="score-image"
+        id="scoreImage"
+        src="sheet%20music/phrase1.png"
+        alt="Score for phrase 1"
+      />
+
+      <p class="score-caption" id="scoreCaption">
+        Phrase 1 of 6
+      </p>
+
+      <div class="score-nav">
+        <button
+          type="button"
+          class="secondary"
+          id="previousPhraseButton"
+        >
+          Previous phrase
+        </button>
+
+        <button
+          type="button"
+          class="secondary"
+          id="nextPhraseButton"
+        >
+          Next phrase
+        </button>
+      </div>
+    </div>
+  </div>
 
   <script>
     const audioPlayer = document.getElementById("audioPlayer");
@@ -487,10 +704,68 @@
     const audioError =
       document.getElementById("audioError");
 
+    const viewScoreSetup =
+      document.getElementById("viewScoreSetup");
+
+    const viewScoreComparison =
+      document.getElementById("viewScoreComparison");
+
+    const scoreOverlay =
+      document.getElementById("scoreOverlay");
+
+    const closeScoreButton =
+      document.getElementById("closeScoreButton");
+
+    const scoreImage =
+      document.getElementById("scoreImage");
+
+    const scoreCaption =
+      document.getElementById("scoreCaption");
+
+    const previousPhraseButton =
+      document.getElementById("previousPhraseButton");
+
+    const nextPhraseButton =
+      document.getElementById("nextPhraseButton");
+
+    const scoreImages = [
+      "sheet%20music/phrase1.png",
+      "sheet%20music/phrase2.png",
+      "sheet%20music/phrase3.png",
+      "sheet%20music/phrase4.png",
+      "sheet%20music/phrase5.png",
+      "sheet%20music/phrase6.png"
+    ];
+
+    // Phrase boundaries from the research recordings.
+    const originalPhraseStarts = [
+      9.6,
+      21.2,
+      33.0,
+      44.5,
+      55.8,
+      68.6
+    ];
+
+    // The prototype audio will be trimmed by 9.1 seconds, leaving
+    // 0.5 seconds before Phrase 1. Change only this value if the
+    // final trim point changes.
+    const audioTrimOffsetSeconds = 9.1;
+    const scoreLeadSeconds = 0.5;
+
+    const scoreStartTimes = originalPhraseStarts.map(
+      (time) => Math.max(
+        0,
+        time - audioTrimOffsetSeconds - scoreLeadSeconds
+      )
+    );
+
     let selectedVoice = "";
     let selectedSpacing = "";
     let currentMode = "";
     let setupCompleted = false;
+    let currentScoreIndex = 0;
+    let scoreReturnFocus = null;
 
     const listenedSpacings = new Set();
 
@@ -500,6 +775,105 @@
 
     function getAudioPath(voice, spacing) {
       return `audio/${voice}/${voice}_${spacing}.wav`;
+    }
+
+    function showAudioError() {
+      audioError.style.display = "block";
+    }
+
+    function updatePlayButton() {
+      playPauseButton.textContent = audioPlayer.paused
+        ? "Play"
+        : "Pause";
+    }
+
+    function updateSetupPlayButton() {
+      setupPlayButton.textContent = audioPlayer.paused
+        ? "Play setup sample"
+        : "Pause sample";
+    }
+
+    function updateScore(index) {
+      currentScoreIndex = Math.max(
+        0,
+        Math.min(index, scoreImages.length - 1)
+      );
+
+      const phraseNumber = currentScoreIndex + 1;
+
+      scoreImage.src = scoreImages[currentScoreIndex];
+      scoreImage.alt = `Score for phrase ${phraseNumber}`;
+      scoreCaption.textContent =
+        `Phrase ${phraseNumber} of ${scoreImages.length}`;
+
+      previousPhraseButton.disabled = currentScoreIndex === 0;
+      nextPhraseButton.disabled =
+        currentScoreIndex === scoreImages.length - 1;
+    }
+
+    function getScoreIndexForTime(currentTime) {
+      let index = 0;
+
+      for (let i = 0; i < scoreStartTimes.length; i += 1) {
+        if (currentTime >= scoreStartTimes[i]) {
+          index = i;
+        } else {
+          break;
+        }
+      }
+
+      return index;
+    }
+
+    function syncScoreToAudio() {
+      const nextScoreIndex = getScoreIndexForTime(
+        audioPlayer.currentTime || 0
+      );
+
+      if (nextScoreIndex !== currentScoreIndex) {
+        updateScore(nextScoreIndex);
+      }
+    }
+
+    function openScore(event) {
+      scoreReturnFocus = event.currentTarget;
+      syncScoreToAudio();
+
+      scoreOverlay.classList.add("open");
+      scoreOverlay.setAttribute("aria-hidden", "false");
+      document.body.classList.add("score-open");
+      closeScoreButton.focus();
+    }
+
+    function closeScore() {
+      const wasOpen = scoreOverlay.classList.contains("open");
+
+      scoreOverlay.classList.remove("open");
+      scoreOverlay.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("score-open");
+
+      if (wasOpen && scoreReturnFocus) {
+        scoreReturnFocus.focus();
+      }
+    }
+
+    function goToPhrase(index) {
+      const targetIndex = Math.max(
+        0,
+        Math.min(index, scoreImages.length - 1)
+      );
+
+      updateScore(targetIndex);
+
+      if (audioPlayer.currentSrc) {
+        audioPlayer.currentTime = scoreStartTimes[targetIndex];
+      }
+    }
+
+    function showFeedbackIfReady() {
+      if (listenedSpacings.size === 3) {
+        feedbackSection.classList.remove("hidden");
+      }
     }
 
     function loadAudio(path, mode, preserveTime = false) {
@@ -529,24 +903,14 @@
             );
           }
 
+          syncScoreToAudio();
+
           if (wasPlaying && mode === "comparison") {
             audioPlayer.play().catch(showAudioError);
           }
         },
         { once: true }
       );
-    }
-
-    function showAudioError() {
-      audioError.style.display = "block";
-    }
-
-    function updatePlayButton() {
-      if (audioPlayer.paused) {
-        playPauseButton.textContent = "Play";
-      } else {
-        playPauseButton.textContent = "Pause";
-      }
     }
 
     voiceButtons.forEach((button) => {
@@ -569,10 +933,16 @@
 
         audioPlayer.pause();
         audioPlayer.currentTime = 0;
+        updateScore(0);
+        setupPlayButton.textContent = "Play setup sample";
+        playPauseButton.textContent = "Play";
 
         setupPlayButton.disabled = false;
         setupRestartButton.disabled = false;
         setupDoneButton.disabled = false;
+
+        playPauseButton.disabled = true;
+        restartButton.disabled = true;
 
         comparisonSection.classList.add("hidden");
         feedbackSection.classList.add("hidden");
@@ -581,6 +951,9 @@
           `Selected voice part: <strong>${capitalize(
             selectedVoice
           )}</strong>`;
+
+        comparisonStatus.textContent =
+          "Select a choir spacing.";
 
         loadAudio(
           getAudioPath(selectedVoice, "lateral"),
@@ -604,12 +977,11 @@
 
         if (audioPlayer.paused) {
           await audioPlayer.play();
-          setupPlayButton.textContent = "Pause sample";
         } else {
           audioPlayer.pause();
-          setupPlayButton.textContent =
-            "Play setup sample";
         }
+
+        updateSetupPlayButton();
       } catch {
         showAudioError();
       }
@@ -621,10 +993,11 @@
       }
 
       audioPlayer.currentTime = 0;
+      updateScore(0);
 
       try {
         await audioPlayer.play();
-        setupPlayButton.textContent = "Pause sample";
+        updateSetupPlayButton();
       } catch {
         showAudioError();
       }
@@ -637,9 +1010,11 @@
 
       audioPlayer.pause();
       audioPlayer.currentTime = 0;
+      updateScore(0);
 
       setupCompleted = true;
-      setupPlayButton.textContent = "Play setup sample";
+      updateSetupPlayButton();
+      closeScore();
 
       comparisonSection.classList.remove("hidden");
       comparisonSection.scrollIntoView({
@@ -655,8 +1030,7 @@
         }
 
         const newSpacing = button.dataset.spacing;
-        const preserveTime =
-          currentMode === "comparison";
+        const preserveTime = currentMode === "comparison";
 
         selectedSpacing = newSpacing;
 
@@ -685,12 +1059,6 @@
           )}</strong> · ${capitalize(
             selectedSpacing
           )}`;
-
-        listenedSpacings.add(selectedSpacing);
-
-        if (listenedSpacings.size === 3) {
-          feedbackSection.classList.remove("hidden");
-        }
       });
     });
 
@@ -718,6 +1086,7 @@
       }
 
       audioPlayer.currentTime = 0;
+      updateScore(0);
 
       try {
         await audioPlayer.play();
@@ -727,21 +1096,56 @@
       }
     });
 
+    viewScoreSetup.addEventListener("click", openScore);
+    viewScoreComparison.addEventListener("click", openScore);
+    closeScoreButton.addEventListener("click", closeScore);
+
+    previousPhraseButton.addEventListener("click", () => {
+      goToPhrase(currentScoreIndex - 1);
+    });
+
+    nextPhraseButton.addEventListener("click", () => {
+      goToPhrase(currentScoreIndex + 1);
+    });
+
+    scoreOverlay.addEventListener("click", (event) => {
+      if (event.target === scoreOverlay) {
+        closeScore();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (
+        event.key === "Escape" &&
+        scoreOverlay.classList.contains("open")
+      ) {
+        closeScore();
+      }
+    });
+
+    audioPlayer.addEventListener("timeupdate", syncScoreToAudio);
+    audioPlayer.addEventListener("seeked", syncScoreToAudio);
+
     audioPlayer.addEventListener("play", () => {
       if (currentMode === "comparison") {
+        listenedSpacings.add(selectedSpacing);
+        showFeedbackIfReady();
         updatePlayButton();
+      } else if (currentMode === "setup") {
+        updateSetupPlayButton();
       }
     });
 
     audioPlayer.addEventListener("pause", () => {
       if (currentMode === "comparison") {
         updatePlayButton();
+      } else if (currentMode === "setup") {
+        updateSetupPlayButton();
       }
     });
 
     audioPlayer.addEventListener("ended", () => {
-      setupPlayButton.textContent =
-        "Play setup sample";
+      updateSetupPlayButton();
       updatePlayButton();
     });
 
@@ -749,6 +1153,8 @@
       "error",
       showAudioError
     );
+
+    updateScore(0);
   </script>
 </body>
 </html>
